@@ -1,3 +1,5 @@
+"use client";
+
 import { SectionHeader } from "@/components/SectionHeader";
 import { PricingCard } from "@/components/PricingCard";
 import { CTAButton } from "@/components/CTAButton";
