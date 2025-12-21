@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 // Animation Variants
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeInOut" } },
+  animate: { opacity: 1, y: 0 },
 };
 
 const staggerContainer = {
@@ -32,6 +32,7 @@ const Section = ({ children, className = "", id }: { children: React.ReactNode, 
     whileInView="animate"
     viewport={{ once: true, amount: 0.2 }}
     variants={fadeInUp}
+    transition={{ duration: 0.8, ease: "easeInOut" }}
   >
     <div className="container mx-auto px-6 max-w-5xl">
       {children}
