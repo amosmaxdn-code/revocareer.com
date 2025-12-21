@@ -2,8 +2,8 @@ import { CTAButton } from "@/components/CTAButton";
 import { FiCheckCircle, FiXCircle, FiArrowRight } from "react-icons/fi";
 
 // Wrapper for section styling
-const Section = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-  <section className={`py-16 md:py-24 ${className}`}>
+const Section = ({ children, className = "", id }: { children: React.ReactNode, className?: string, id?: string }) => (
+  <section id={id} className={`py-16 md:py-24 ${className}`}>
     <div className="container mx-auto px-6 max-w-4xl">
       {children}
     </div>
