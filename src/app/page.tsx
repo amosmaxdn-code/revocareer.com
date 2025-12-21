@@ -74,7 +74,7 @@ export default function OnePager() {
                 <p>Une trajectoire claire, alignée sur les standards réels.</p>
             </div>
             <div className="mt-12">
-              <CTAButton href="#postuler" variant="primary" className="text-lg px-10 py-4">Postuler au programme – Sélection obligatoire</CTAButton>
+              <CTAButton href="/apply" variant="primary" className="text-lg px-10 py-4">Postuler au programme – Sélection obligatoire</CTAButton>
             </div>
         </motion.div>
       </section>
@@ -218,7 +218,7 @@ export default function OnePager() {
                 <p className="text-gray-500">(paiement échelonné)</p>
             </div>
             <div className="mt-8">
-                <CTAButton href="#postuler" variant="secondary" className="w-full">Postuler à l'offre principale</CTAButton>
+                <CTAButton href="/apply" variant="secondary" className="w-full">Postuler à l'offre principale</CTAButton>
             </div>
           </motion.div>
           <motion.div variants={fadeInUp} whileHover={cardHover} className="border-4 border-primary p-8 rounded-lg text-center flex flex-col justify-between relative shadow-2xl">
@@ -230,7 +230,7 @@ export default function OnePager() {
                 <p className="text-gray-600 mb-6">Suivi renforcé & Accès direct prioritaire</p>
             </div>
              <div className="mt-8">
-                <CTAButton href="#postuler" variant="primary" className="w-full">Postuler à l'offre Premium</CTAButton>
+                <CTAButton href="/apply" variant="primary" className="w-full">Postuler à l'offre Premium</CTAButton>
             </div>
           </motion.div>
         </motion.div>
@@ -271,7 +271,7 @@ export default function OnePager() {
           <p className="mt-8 text-3xl font-bold text-dark-blue">Ou vous pouvez prendre une décision structurée.</p>
           <p className="mt-10 text-xl font-semibold text-dark-blue">Revocareer n’est pas pour tout le monde.<br/>Mais pour les bons profils, c’est un accélérateur décisif.</p>
           <div className="mt-12">
-            <CTAButton href="#" variant="primary" className="text-lg px-10 py-4">Démarrer ma candidature</CTAButton>
+            <CTAButton href="/apply" variant="primary" className="text-lg px-10 py-4">Démarrer ma candidature</CTAButton>
           </div>
       </Section>
     </>
