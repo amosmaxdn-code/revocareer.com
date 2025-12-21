@@ -7,6 +7,7 @@ import { FiCheckCircle, FiLoader, FiAlertTriangle } from 'react-icons/fi';
 // State shape with human-readable names
 const initialFormData = {
   fullName: '',
+  email: '',
   country: '',
   age: '',
   status: '',
@@ -37,6 +38,22 @@ const DisqualificationMessage = ({ message }: { message: string }) => (
     </div>
 );
 
+// HELPER COMPONENTS MOVED OUTSIDE a
+const Fieldset = ({ title, children }: { title: string, children: React.ReactNode }) => (
+    <fieldset className="border-t-2 border-gray-200 pt-8 mt-12 first:mt-0 first:border-t-0 first:pt-0">
+        <legend className="text-2xl font-bold text-dark-blue py-2">{title}</legend>
+        <div className="space-y-8 mt-6">{children}</div>
+    </fieldset>
+);
+
+const FormQuestion = ({ number, label, children }: { number: number, label: string, children: React.ReactNode }) => (
+    <div>
+        <label className="block text-md font-bold text-gray-800 mb-3">{number}. {label}</label>
+        {children}
+    </div>
+);
+
+
 export default function ApplyPage() {
   const [formData, setFormData] = useState(initialFormData);
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -60,11 +77,14 @@ export default function ApplyPage() {
     
     if (type === 'checkbox') {
       const { checked } = e.target as HTMLInputElement;
+      const fieldName = name;
+      const currentValues = formData[fieldName as keyof typeof formData] as string[];
+      
       setFormData(prev => ({
         ...prev,
-        [name]: checked 
-          ? [...(prev[name as keyof typeof prev] as string[]), value]
-          : (prev[name as keyof typeof prev] as string[]).filter(item => item !== value),
+        [fieldName]: checked 
+          ? [...currentValues, value]
+          : currentValues.filter(item => item !== value),
       }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
@@ -115,20 +135,6 @@ export default function ApplyPage() {
     );
   }
 
-  const Fieldset = ({ title, children }: { title: string, children: React.ReactNode }) => (
-    <fieldset className="border-t-2 border-primary pt-8 mt-12 first:mt-0 first:border-t-0 first:pt-0">
-        <legend className="text-2xl font-bold text-dark-blue py-2">{title}</legend>
-        <div className="space-y-8 mt-6">{children}</div>
-    </fieldset>
-  );
-  
-  const FormQuestion = ({ number, label, children }: { number: number, label: string, children: React.ReactNode }) => (
-      <div>
-          <label className="block text-md font-bold text-gray-800 mb-3">{number}. {label}</label>
-          {children}
-      </div>
-  )
-
   return (
     <div className="bg-background min-h-screen pt-32 md:pt-40 pb-20">
       <div className="container mx-auto px-6 max-w-3xl">
@@ -140,7 +146,7 @@ export default function ApplyPage() {
           </div>
           
           <form onSubmit={handleSubmit} className="mt-12">
-            <Fieldset title="Section 1 — Identité & Situation Actuelle">
+            <Fieldset title="Section 1: Identité & Situation Actuelle">
                 <FormQuestion number={1} label="Nom et prénom"><input type="text" name="fullName" id="fullName" required value={formData.fullName} onChange={handleChange} className="input-styled"/></FormQuestion>
                 <FormQuestion number={2} label="Pays de résidence actuel"><input type="text" name="country" id="country" required value={formData.country} onChange={handleChange} className="input-styled"/></FormQuestion>
                 <FormQuestion number={3} label="Âge"><input type="number" name="age" id="age" required value={formData.age} onChange={handleChange} className="input-styled"/></FormQuestion>
@@ -153,58 +159,58 @@ export default function ApplyPage() {
                 </FormQuestion>
             </Fieldset>
 
-            <Fieldset title="Section 2 — Expérience en Gestion de Projet">
-                <FormQuestion number={5} label="Combien d’années d’expérience réelle as-tu en gestion de projet ?">
+            <Fieldset title="Section 2: Expérience en Gestion de Projet">
+                <FormQuestion number={5} label="Combien d’années d’expérience réelle avez-vous en gestion de projet ?">
                     {['Moins de 1 an', '1–2 ans', '2–4 ans', '5–7 ans', 'Plus de 7 ans'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="radio" name="experience" value={opt} required checked={formData.experience === opt} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
                 </FormQuestion>
                 {formData.experience && ['Moins de 1 an', '1–2 ans'].includes(formData.experience) && <DisqualificationMessage message="Ce programme n’est pas adapté à votre niveau d'expérience actuel."/>}
                 
-                <FormQuestion number={6} label="Dans quels contextes as-tu exercé la gestion de projet ?">
+                <FormQuestion number={6} label="Dans quels contextes avez-vous exercé la gestion de projet ?">
                     {['ONG / projets de développement', 'Entreprise privée', 'IT / digital / tech', 'Projets communautaires'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="checkbox" name="contexts" value={opt} checked={formData.contexts.includes(opt)} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
                     <input type="text" name="contextsOther" placeholder="Autre contexte (préciser)" value={formData.contextsOther} onChange={handleChange} className="w-full input-styled mt-2"/>
                 </FormQuestion>
 
-                <FormQuestion number={7} label="Décris brièvement un projet que tu as réellement piloté (ou co-piloté). (minimum 5 lignes)"><textarea name="projectDescription" rows={6} required minLength={100} value={formData.projectDescription} onChange={handleChange} className="input-styled"/></FormQuestion>
+                <FormQuestion number={7} label="Décrivez brièvement un projet que vous avez réellement piloté (ou co-piloté). (minimum 5 lignes)"><textarea name="projectDescription" rows={6} required minLength={100} value={formData.projectDescription} onChange={handleChange} className="input-styled"/></FormQuestion>
             </Fieldset>
 
-            <Fieldset title="Section 3 — Objectif Canada">
+            <Fieldset title="Section 3: Objectif Canada">
                 <FormQuestion number={8} label="Pourquoi le Canada ?"><textarea name="whyCanada" rows={4} required value={formData.whyCanada} onChange={handleChange} className="input-styled"/></FormQuestion>
-                <FormQuestion number={9} label="Quel est ton objectif principal à court/moyen terme ?">
+                <FormQuestion number={9} label="Quel est votre objectif principal à court/moyen terme ?">
                     {['Être plus crédible professionnellement', 'Accéder à des opportunités d’emploi au Canada', 'Préparer une immigration réaliste', 'Clarifier ma trajectoire'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="radio" name="objective" value={opt} checked={formData.objective === opt} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
                     <label className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary cursor-pointer"><input type="radio" name="objective" value="Autre" checked={formData.objective === 'Autre'} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300"/><span className="ml-3 text-gray-700">Autre</span></label>
                     <input type="text" name="objectiveOther" placeholder="Préciser" value={formData.objectiveOther} onChange={handleChange} className={`w-full input-styled mt-2 ${formData.objective === 'Autre' ? 'block' : 'hidden'}`}/>
                 </FormQuestion>
-                <FormQuestion number={10} label="Quel horizon de temps te sembles réaliste pour le Canada ?">
+                <FormQuestion number={10} label="Quel horizon de temps vous semble réaliste pour le Canada ?">
                     {['Moins de 6 mois', '6–12 mois', '1–2 ans', 'Plus de 2 ans'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="radio" name="timeline" value={opt} required checked={formData.timeline === opt} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
                 </FormQuestion>
             </Fieldset>
 
-            <Fieldset title="Section 4 — Certifications & Compétences">
-                <FormQuestion number={11} label="As-tu déjà des certifications en gestion de projet ?">
+            <Fieldset title="Section 4: Certifications & Compétences">
+                <FormQuestion number={11} label="Avez-vous déjà des certifications en gestion de projet ?">
                     {['Aucune', 'CAPM', 'PMP', 'PRINCE2', 'Scrum / Agile', 'ITIL'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="checkbox" name="certifications" value={opt} checked={formData.certifications.includes(opt)} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
                     <input type="text" name="certificationsOther" placeholder="Autre certification (préciser)" value={formData.certificationsOther} onChange={handleChange} className="w-full input-styled mt-2"/>
                 </FormQuestion>
-                 <FormQuestion number={12} label="Si tu devais choisir UNE certification aujourd’hui, laquelle et pourquoi ?"><textarea name="certChoice" rows={4} required value={formData.certChoice} onChange={handleChange} className="input-styled"/></FormQuestion>
+                 <FormQuestion number={12} label="Si vous deviez choisir UNE certification aujourd’hui, laquelle et pourquoi ?"><textarea name="certChoice" rows={4} required value={formData.certChoice} onChange={handleChange} className="input-styled"/></FormQuestion>
             </Fieldset>
 
-            <Fieldset title="Section 5 — Engagement & Maturité">
-                <FormQuestion number={13} label="Qu’est-ce qui te bloque aujourd’hui dans ta progression professionnelle ?"><textarea name="blocker" rows={4} required value={formData.blocker} onChange={handleChange} className="input-styled"/></FormQuestion>
-                <FormQuestion number={14} label="As-tu déjà investi financièrement dans ta formation ou ton évolution professionnelle ?">
+            <Fieldset title="Section 5: Engagement & Maturité">
+                <FormQuestion number={13} label="Qu’est-ce qui vous bloque aujourd’hui dans votre progression professionnelle ?"><textarea name="blocker" rows={4} required value={formData.blocker} onChange={handleChange} className="input-styled"/></FormQuestion>
+                <FormQuestion number={14} label="Avez-vous déjà investi financièrement dans votre formation ou votre évolution professionnelle ?">
                      {['Oui (formations, certifications, coaching)', 'Non'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="radio" name="pastInvestment" value={opt} required checked={formData.pastInvestment === opt} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
                 </FormQuestion>
-                <FormQuestion number={15} label="Le programme représente un investissement financier sérieux. Es-tu prêt à t’engager pleinement (temps, discipline, argent) ?">
+                <FormQuestion number={15} label="Le programme représente un investissement financier sérieux. Êtes-vous prêt à vous engager pleinement (temps, discipline, argent) ?">
                     {['Oui', 'Non'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="radio" name="commitment" value={opt} required checked={formData.commitment === opt} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
@@ -212,13 +218,13 @@ export default function ApplyPage() {
                 {formData.commitment === 'Non' && <DisqualificationMessage message="Un engagement plein et entier est un prérequis non négociable."/>}
             </Fieldset>
 
-            <Fieldset title="Section 6 — Responsabilité Personnelle">
-                <FormQuestion number={16} label="Si dans 12 mois ta situation n’a pas évolué, quelle part de responsabilité prends-tu personnellement ?"><textarea name="responsibility" rows={4} required value={formData.responsibility} onChange={handleChange} className="input-styled"/></FormQuestion>
+            <Fieldset title="Section 6: Responsabilité Personnelle">
+                <FormQuestion number={16} label="Si dans 12 mois votre situation n’a pas évolué, quelle part de responsabilité prenez-vous personnellement ?"><textarea name="responsibility" rows={4} required value={formData.responsibility} onChange={handleChange} className="input-styled"/></FormQuestion>
             </Fieldset>
 
-            <Fieldset title="Section 7 — Validation Finale">
-                 <FormQuestion number={17} label="Pourquoi penses-tu être un bon candidat pour ce programme ?"><textarea name="goodCandidate" rows={4} required value={formData.goodCandidate} onChange={handleChange} className="input-styled"/></FormQuestion>
-                 <FormQuestion number={18} label="Acceptes-tu que ta candidature puisse être refusée si le programme n’est pas adapté à ton profil ?">
+            <Fieldset title="Section 7: Validation Finale">
+                 <FormQuestion number={17} label="Pourquoi pensez-vous être un bon candidat pour ce programme ?"><textarea name="goodCandidate" rows={4} required value={formData.goodCandidate} onChange={handleChange} className="input-styled"/></FormQuestion>
+                 <FormQuestion number={18} label="Acceptez-vous que votre candidature puisse être refusée si le programme n’est pas adapté à votre profil ?">
                     {['Oui', 'Non'].map(opt => 
                         <label key={opt} className="flex items-center p-3 border rounded-md has-[:checked]:bg-primary/10 has-[:checked]:border-primary mb-2 cursor-pointer"><input type="radio" name="acceptsRefusal" value={opt} required checked={formData.acceptsRefusal === opt} onChange={handleChange} className="h-4 w-4 text-primary focus:ring-primary border-gray-300"/><span className="ml-3 text-gray-700">{opt}</span></label>
                     )}
