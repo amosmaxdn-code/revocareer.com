@@ -24,7 +24,7 @@ export function Footer() {
             <h4 className="font-semibold tracking-wide">Contact</h4>
             <ul className="mt-4 space-y-2">
               <li className="opacity-80">contact@revocareer.com</li>
-              <li className="opacity-80">Cotonou, Bénin</li>
+              <li className="opacity-80">Canada</li>
             </ul>
             <div className="flex mt-6 space-x-4 md:justify-end">
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-background hover:text-primary transition-colors">
