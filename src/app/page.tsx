@@ -1,25 +1,26 @@
 "use client";
 
+import Image from "next/image";
 import { CTAButton } from "@/components/CTAButton";
-import { FiCheckCircle, FiXCircle } from "react-icons/fi";
+import { FiCheckCircle, FiXCircle, FiTarget, FiGrid, FiSend } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 // Animation Variants
 const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
+  initial: { opacity: 0, y: 80 },
   animate: { opacity: 1, y: 0 },
 };
 
 const staggerContainer = {
   animate: {
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.15,
     },
   },
 };
 
 const cardHover = {
-  scale: 1.03,
+  scale: 1.05,
   transition: { duration: 0.3 }
 }
 
@@ -32,7 +33,7 @@ const Section = ({ children, className = "", id }: { children: React.ReactNode, 
     whileInView="animate"
     viewport={{ once: true, amount: 0.2 }}
     variants={fadeInUp}
-    transition={{ duration: 0.8, ease: "easeInOut" }}
+    transition={{ duration: 1.2, ease: "easeInOut" }}
   >
     <div className="container mx-auto px-6 max-w-5xl">
       {children}
@@ -53,26 +54,30 @@ export default function OnePager() {
   return (
     <>
       {/* 1. HERO SECTION */}
-      <section className="bg-background text-center pt-40 pb-24 md:pt-48 md:pb-32">
+      <section className="relative text-center h-[90vh] min-h-[700px] flex items-center justify-center text-white overflow-hidden">
+        <Image 
+          src="https://images.unsplash.com/photo-1523908511403-7fc7b255b2a4?q=80&w=2592&auto=format&fit=crop"
+          alt="Paysage urbain canadien"
+          fill
+          className="z-0 object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-dark-blue/70 z-10"></div>
         <motion.div 
-            className="container mx-auto px-6 max-w-4xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
+            className="container mx-auto px-6 max-w-4xl z-20"
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
         >
-            <h1 className="text-4xl md:text-6xl font-bold text-dark-blue leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
               Devenir gestionnaire de projet crédible pour le Canada n’est pas une question de motivation.
             </h1>
             <h2 className="text-4xl md:text-6xl font-bold text-primary leading-tight mt-2">
                 C’est une question de structure.
             </h2>
-            <p className="mt-8 text-lg text-gray-700 max-w-3xl mx-auto">
+            <p className="mt-8 text-lg text-gray-200 max-w-3xl mx-auto">
               Revocareer accompagne des jeunes professionnels africains en gestion de projet (2 à 7 ans d’expérience) dans la construction d’un profil certifié, employable et crédible pour le marché canadien.
             </p>
-            <div className="mt-8 text-gray-500 font-semibold space-y-2">
-                <p>Pas de promesses irréalistes. Pas de raccourcis.</p>
-                <p>Une trajectoire claire, alignée sur les standards réels.</p>
-            </div>
             <div className="mt-12">
               <CTAButton href="/apply" variant="primary" className="text-lg px-10 py-4">Postuler au programme – Sélection obligatoire</CTAButton>
             </div>
@@ -120,17 +125,20 @@ export default function OnePager() {
         <SectionTitle subtitle="Revocareer ne vous ajoute pas des couches de complexité. Nous organisons, nous filtrons, nous alignons.">La Solution Revocareer</SectionTitle>
         <p className="text-xl text-gray-700 max-w-3xl mx-auto mt-2">Notre approche repose sur 3 piliers fondamentaux :</p>
         <motion.div className="grid md:grid-cols-3 gap-8 mt-16 text-left" variants={staggerContainer}>
-          <motion.div variants={fadeInUp} whileHover={cardHover} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
-            <h3 className="text-2xl font-bold text-dark-blue">1. Clarté Stratégique</h3>
-            <p className="mt-4 text-gray-600">Diagnostic brutal du profil, analyse de l’écart avec le marché canadien et prise de décisions rationnelles.</p>
+          <motion.div variants={fadeInUp} whileHover={cardHover} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm text-center">
+            <FiTarget className="text-4xl text-primary mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-dark-blue">Clarté Stratégique</h3>
+            <p className="mt-4 text-gray-600">Diagnostic brutal du profil, analyse de l’écart avec le marché et prise de décisions rationnelles.</p>
           </motion.div>
-          <motion.div variants={fadeInUp} whileHover={cardHover} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
-            <h3 className="text-2xl font-bold text-dark-blue">2. Structuration du Profil</h3>
-            <p className="mt-4 text-gray-600">Définition d'un positionnement professionnel précis, sélection des certifications réellement utiles et création d'un narratif de carrière cohérent.</p>
+          <motion.div variants={fadeInUp} whileHover={cardHover} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm text-center">
+            <FiGrid className="text-4xl text-primary mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-dark-blue">Structuration du Profil</h3>
+            <p className="mt-4 text-gray-600">Positionnement précis, sélection des certifications réellement utiles et création d'un narratif de carrière cohérent.</p>
           </motion.div>
-          <motion.div variants={fadeInUp} whileHover={cardHover} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
-            <h3 className="text-2xl font-bold text-dark-blue">3. Activation Marché</h3>
-            <p className="mt-4 text-gray-600">Alignement du CV et de LinkedIn aux standards canadiens, et développement d'une logique de candidature intelligente et réaliste.</p>
+          <motion.div variants={fadeInUp} whileHover={cardHover} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm text-center">
+            <FiSend className="text-4xl text-primary mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-dark-blue">Activation Marché</h3>
+            <p className="mt-4 text-gray-600">CV et LinkedIn alignés, et développement d'une logique de candidature intelligente et réaliste.</p>
           </motion.div>
         </motion.div>
       </Section>
@@ -156,24 +164,18 @@ export default function OnePager() {
       {/* 6. LA TRANSFORMATION */}
       <Section className="text-center">
         <SectionTitle>La Transformation</SectionTitle>
-        <motion.div variants={staggerContainer} className="grid md:grid-cols-2 gap-4 items-center max-w-5xl mx-auto bg-white p-4 rounded-xl shadow-lg border">
-          <motion.div variants={fadeInUp} className="bg-gray-100 p-8 rounded-lg">
-            <h3 className="text-2xl font-bold text-gray-500 mb-4">Avant</h3>
-            <ul className="space-y-2 text-gray-600 text-lg text-left">
-              <li className="flex items-center"><FiXCircle className="text-red-400 mr-3"/>Profil flou</li>
-              <li className="flex items-center"><FiXCircle className="text-red-400 mr-3"/>Certifications dispersées</li>
-              <li className="flex items-center"><FiXCircle className="text-red-400 mr-3"/>CV non aligné</li>
-              <li className="flex items-center"><FiXCircle className="text-red-400 mr-3"/>Candidatures inefficaces</li>
-            </ul>
+        <motion.div variants={staggerContainer} className="grid md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
+          <motion.div variants={fadeInUp} className="text-left">
+            <h3 className="text-2xl font-bold text-gray-500 mb-4 text-center">Avant</h3>
+            <div className="relative aspect-[4/3]">
+                <Image src="https://images.unsplash.com/photo-1489782552635-a3323c39326f?q=80&w=1974&auto=format&fit=crop" alt="Chemin confus et emmêlé" fill className="rounded-lg shadow-lg object-cover" />
+            </div>
           </motion.div>
-          <motion.div variants={fadeInUp} className="bg-dark-blue text-white p-8 rounded-lg">
-            <h3 className="text-2xl font-bold text-accent mb-4">Après</h3>
-            <ul className="space-y-2 text-gray-200 text-lg text-left">
-              <li className="flex items-center"><FiCheckCircle className="text-green-400 mr-3"/>Positionnement clair</li>
-              <li className="flex items-center"><FiCheckCircle className="text-green-400 mr-3"/>Profil certifiable et crédible</li>
-              <li className="flex items-center"><FiCheckCircle className="text-green-400 mr-3"/>Dossier Canada solide</li>
-              <li className="flex items-center"><FiCheckCircle className="text-green-400 mr-3"/>Capacité à agir de façon autonome</li>
-            </ul>
+          <motion.div variants={fadeInUp} className="text-left">
+             <h3 className="text-2xl font-bold text-accent mb-4 text-center">Après</h3>
+             <div className="relative aspect-[4/3]">
+                <Image src="https://images.unsplash.com/photo-1559348349-36f33997c8b3?q=80&w=2070&auto=format&fit=crop" alt="Route droite vers le succès" fill className="rounded-lg shadow-lg object-cover" />
+             </div>
           </motion.div>
         </motion.div>
       </Section>
