@@ -30,7 +30,7 @@ export function Footer() {
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-background hover:text-primary transition-colors">
                 <FaLinkedin size={24} />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="text-background hover:text-primary transition-colors">
+              <a href="https://wa.me/2290152002277" target="_blank" rel="noopener noreferrer" className="text-background hover:text-primary transition-colors">
                 <FaWhatsapp size={24} />
               </a>
             </div>
