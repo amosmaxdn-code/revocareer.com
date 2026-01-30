@@ -161,11 +161,11 @@ const Home = () => {
                 Le Coût Réel de l'Inaction
              </h2>
              <div className="bg-red-900/10 border border-red-500/30 rounded-xl p-8">
-                <p className="text-xl text-gray-300">Attendre un an de plus pourrait vous coûter (en perte de salaire net) :</p>
+                <p className="text-xl text-gray-300">Votre passivité vous coûte cher (en perte de salaire net) :</p>
                 <p className="font-geist-mono text-7xl md:text-9xl font-bold text-blue-400 my-4 tracking-tighter">
-                  ~134,000 CAD
+                  ~390,000 CAD
                 </p>
-                <p className="text-lg text-gray-400">Basé sur la différence de revenu pour un profil senior.</p>
+                <p className="text-lg text-gray-400">Basé sur les opportunités manquées avec votre profil.</p>
              </div>
              <StrategicCTA />
           </div>
