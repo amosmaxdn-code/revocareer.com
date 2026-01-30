@@ -89,8 +89,8 @@ const StrategicCTA = () => {
 const Home = () => {
   const tableHeaders = ["Niveau d'Expérience", "Afrique (Hubs Tech)", "Canada (Cible)"];
   const tableData = [
-    ["Intermédiaire (4-7 ans)", "~18,000 CAD", "95,000 CAD"],
-    ["Senior (8+ ans)", "~26,000 CAD", "130,000 CAD"]
+    ["Intermédiaire (4-7 ans)", "~18,000 CAD", "120,000 CAD"],
+    ["Senior (8+ ans)", "~26,000 CAD", "160,000 CAD"]
   ];
 
   return (
@@ -104,8 +104,7 @@ const Home = () => {
             transition={{ duration: 0.8 }}
             className="text-4xl sm:text-5xl font-extrabold tracking-tight"
           >
-            Votre expérience en Gestion de Projet vaut de l'or.
-            <span className="block text-red-500 mt-2">Ne laissez plus 50% de votre valeur sur la table.</span>
+            Ne laissez plus 80% de votre potentiel de revenu sur la table.
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -113,7 +112,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mt-6 text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto"
           >
-            Le marché canadien recherche votre expertise. Que vous soyez déjà certifié ou prêt à le devenir, découvrez comment multiplier vos revenus par 2.
+            Votre expertise en Gestion de Projet est une compétence de luxe au Canada. Arrêtez de la brader.
           </motion.p>
         </div>
       </section>
@@ -164,7 +163,7 @@ const Home = () => {
              <div className="bg-red-900/10 border border-red-500/30 rounded-xl p-8">
                 <p className="text-xl text-gray-300">Attendre un an de plus pourrait vous coûter (en perte de salaire net) :</p>
                 <p className="font-geist-mono text-7xl md:text-9xl font-bold text-blue-400 my-4 tracking-tighter">
-                  ~520,000 CAD
+                  ~134,000 CAD
                 </p>
                 <p className="text-lg text-gray-400">Basé sur la différence de revenu pour un profil senior.</p>
              </div>
