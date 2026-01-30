@@ -22,7 +22,7 @@ export function Footer() {
           {/* Contact & Social */}
           <div className="col-span-1 md:text-right">
             <h4 className="font-semibold tracking-wide">Contact</h4>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-4 space-y-2 text-xs">
               <li className="opacity-80">contact@revocareer.com</li>
               <li className="opacity-80">Cotonou, Bénin</li>
             </ul>
@@ -37,7 +37,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-700 text-center text-sm opacity-60">
+        <div className="mt-12 pt-8 border-t border-gray-700 text-center text-xs opacity-60">
           <p>&copy; {new Date().getFullYear()} Revocareer.com. Tous droits réservés.</p>
         </div>
       </div>
