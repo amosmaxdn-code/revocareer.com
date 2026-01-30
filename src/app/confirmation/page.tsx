@@ -29,7 +29,7 @@ const ConfirmationPage = () => {
             href="https://calendly.com/application-revocareer/session-strategique-eligibilite-canada"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-10 rounded-lg text-xl transition duration-300 ease-in-out transform hover:scale-105 shadow-[0_5px_30px_rgba(59,130,246,0.3)]"
+            className="inline-block bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-4 px-10 rounded-lg text-xl transition duration-300 ease-in-out transform hover:scale-105 shadow-[0_5px_30px_rgba(234,179,8,0.3)]"
           >
             RÉSERVER MA SESSION STRATÉGIQUE (Gratuit)
           </a>
