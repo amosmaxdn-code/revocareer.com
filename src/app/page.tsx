@@ -89,8 +89,8 @@ const StrategicCTA = () => {
 const Home = () => {
   const tableHeaders = ["Niveau d'Expérience", "Afrique (Hubs Tech)", "Canada (Cible)"];
   const tableData = [
-    ["Intermédiaire (4-7 ans)", "~42,000 CAD", "95,000 CAD"],
-    ["Senior (8+ ans)", "~62,000 CAD", "130,000 CAD"]
+    ["Intermédiaire (4-7 ans)", "~18,000 CAD", "95,000 CAD"],
+    ["Senior (8+ ans)", "~26,000 CAD", "130,000 CAD"]
   ];
 
   return (
@@ -164,7 +164,7 @@ const Home = () => {
              <div className="bg-red-900/10 border border-red-500/30 rounded-xl p-8">
                 <p className="text-xl text-gray-300">Attendre un an de plus pourrait vous coûter (en perte de salaire net) :</p>
                 <p className="font-geist-mono text-7xl md:text-9xl font-bold text-blue-400 my-4 tracking-tighter">
-                  ~68,000 CAD
+                  ~520,000 CAD
                 </p>
                 <p className="text-lg text-gray-400">Basé sur la différence de revenu pour un profil senior.</p>
              </div>
