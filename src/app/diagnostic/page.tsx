@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaUserTie, FaCertificate, FaMoneyBillWave, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaUserTie, FaCertificate, FaMoneyBillWave, FaEnvelope, FaPhone, FaBriefcase } from 'react-icons/fa';
 
 const DiagnosticPage = () => {
   const [step, setStep] = useState(1);
@@ -12,6 +12,7 @@ const DiagnosticPage = () => {
   const [formData, setFormData] = useState({
     experience: '',
     certificationStatus: '',
+    salaireActuel: '',
     budget: '',
     email: '',
     phone: '',
@@ -40,7 +41,7 @@ const DiagnosticPage = () => {
     setError('');
 
     // --- Client-side validation ---
-    if (!formData.experience || !formData.certificationStatus || !formData.budget || !formData.email || !formData.phone) {
+    if (!formData.experience || !formData.certificationStatus || !formData.salaireActuel || !formData.budget || !formData.email || !formData.phone) {
       setError('Tous les champs sont obligatoires. Veuillez vérifier vos réponses.');
       return; // Stop submission if validation fails
     }
@@ -127,6 +128,17 @@ const DiagnosticPage = () => {
 
           {step === 2 && (
             <div className="space-y-8 animate-fade-in">
+                <div>
+                    <p className="text-sm text-blue-300 mb-2">Cette donnée est essentielle pour quantifier le gain que nous pouvons vous apporter.</p>
+                    <label htmlFor="salaireActuel" className="block text-gray-300 font-semibold mb-2"><FaBriefcase className="inline mr-2" />Salaire Annuel Actuel (CAD)</label>
+                    <select id="salaireActuel" name="salaireActuel" value={formData.salaireActuel} onChange={handleChange} required className="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Sélectionnez votre tranche de salaire</option>
+                        <option value="<20k">Moins de 20,000 CAD</option>
+                        <option value="20k-40k">20,000 - 40,000 CAD</option>
+                        <option value="40k-60k">40,000 - 60,000 CAD</option>
+                        <option value="60k+">Plus de 60,000 CAD</option>
+                    </select>
+                </div>
                 <div>
                     <p className="text-sm text-blue-300 mb-2">Ceci nous permet d'évaluer votre capacité à investir dans les outils de votre transition.</p>
                     <label htmlFor="budget" className="block text-gray-300 font-semibold mb-2"><FaMoneyBillWave className="inline mr-2" />Budget d'investissement disponible</label>
