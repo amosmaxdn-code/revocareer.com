@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { CTAButton } from "./CTAButton";
 
 export function Navbar() {
@@ -9,7 +10,7 @@ export function Navbar() {
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           <Link href="/">
-            <img src="/images/LOGO%20rc.jpg" alt="Rev'O Carrière Logo" width={150} height={50} />
+            <Image src="/images/LOGO%20rc.jpg" alt="Rev'O Carrière Logo" width={150} height={50} />
           </Link>
 
           <div className="hidden md:block">
