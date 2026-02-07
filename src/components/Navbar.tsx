@@ -14,10 +14,10 @@ export function Navbar() {
           </Link>
 
           <div className="hidden md:block">
-             <CTAButton href="#postuler" variant="primary">Postuler au programme</CTAButton>
+             <CTAButton href="/programme" variant="primary">Postuler au programme</CTAButton>
           </div>
            <div className="md:hidden">
-             <CTAButton href="#postuler" variant="primary" className="px-4 py-2 text-sm">Postuler</CTAButton>
+             <CTAButton href="/programme" variant="primary" className="px-4 py-2 text-sm">Postuler</CTAButton>
           </div>
         </div>
       </div>
