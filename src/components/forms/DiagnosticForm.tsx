@@ -56,11 +56,37 @@ export const DiagnosticForm = () => {
     e.preventDefault();
     setStatus('sending');
 
-    // Here you would typically handle form submission, e.g., send data to an API endpoint.
-    // For this example, we'll just simulate a delay.
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    const form = e.currentTarget;
+    const formData = {
+      fullName: (form.elements.namedItem('fullName') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      linkedin: (form.elements.namedItem('linkedin') as HTMLInputElement).value,
+      experienceYears: parseInt((form.elements.namedItem('experienceYears') as HTMLInputElement).value),
+      currentSalary: parseInt((form.elements.namedItem('currentSalary') as HTMLInputElement).value),
+      currentSituation: (form.elements.namedItem('currentSituation') as HTMLTextAreaElement).value,
+      careerGoals: (form.elements.namedItem('careerGoals') as HTMLTextAreaElement).value,
+    };
 
-    setStatus('success');
+    try {
+      const response = await fetch('/api/diagnostic-submission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        form.reset(); // Clear the form
+      } else {
+        const errorData = await response.json();
+        setStatus(`error: ${errorData.message || 'Something went wrong.'}`);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setStatus('error: Network error or server unreachable.');
+    }
   };
 
   return (
@@ -70,6 +96,7 @@ export const DiagnosticForm = () => {
         <InputField id="email" label="Adresse Email" type="email" placeholder="votre.email@example.com" />
         <InputField id="linkedin" label="Profil LinkedIn" placeholder="https://linkedin.com/in/votreprofil" />
         <InputField id="experienceYears" label="Années d'Expérience en Gestion de Projet" type="number" placeholder="Ex: 8" />
+        <InputField id="currentSalary" label="Salaire Annuel Actuel (CAD)" type="number" placeholder="Ex: 80000" />
         <TextareaField
           id="currentSituation"
           label="Décrivez votre situation professionnelle actuelle"
@@ -95,6 +122,11 @@ export const DiagnosticForm = () => {
       {status === 'success' && (
         <p className="mt-6 text-center text-green-400">
           Merci ! Votre candidature a bien été reçue. Nous vous recontacterons sous 48h.
+        </p>
+      )}
+      {status.startsWith('error') && (
+        <p className="mt-6 text-center text-red-500">
+          Erreur lors de l'envoi de la candidature: {status.substring(7)}
         </p>
       )}
     </form>
