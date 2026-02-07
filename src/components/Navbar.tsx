@@ -10,7 +10,7 @@ export function Navbar() {
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           <Link href="/">
-            <Image src="/images/LOGO%20rc.jpg" alt="Rev'O Carrière Logo" width={150} height={50} />
+            <Image src="/images/logo%20rc.png" alt="Rev'O Carrière Logo" width={150} height={50} />
           </Link>
 
           <div className="hidden md:block">
