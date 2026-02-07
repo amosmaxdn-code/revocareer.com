@@ -2,133 +2,11 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaChartBar, FaExclamationTriangle, FaArrowRight, FaUserCog, FaRocket, FaClipboardCheck } from 'react-icons/fa';
-
-// --- Reusable Animated Section Component ---
-const AnimatedSection = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// --- Responsive ComparisonTable Component ---
-const ComparisonTable = ({ headers, data }: { headers: string[], data: (string | number)[][] }) => {
-  const targetColumnIndex = headers.findIndex(h => h.includes('Canada (Cible)'));
-  const nonTargetColumnIndex = headers.findIndex(h => h.includes('Afrique'));
-
-  return (
-    <>
-      {/* Mobile View: Cards */}
-      <div className="space-y-6 md:hidden">
-        {data.map((row, i) => (
-          <div key={i} className="bg-gray-900/50 border border-gray-700/50 rounded-lg p-4">
-            <h3 className="font-bold text-lg text-white mb-3">{row[0]}</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">{headers[nonTargetColumnIndex]}</span>
-                <span className="font-mono">{row[nonTargetColumnIndex]}</span>
-              </div>
-              <div className="flex justify-between items-center bg-blue-900/20 p-2 rounded-md">
-                <span className="text-blue-400 font-semibold">{headers[targetColumnIndex]}</span>
-                <span className="font-mono font-bold text-blue-300">{row[targetColumnIndex]}</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Desktop View: Table */}
-      <div className="hidden md:block overflow-x-auto">
-        <table className="min-w-full bg-gray-900/50 rounded-lg shadow-xl border border-gray-700/50">
-          <thead>
-            <tr className="border-b border-gray-700/50">
-              {headers.map((header, i) => (
-                <th key={i} className={`py-5 px-6 text-left text-sm font-semibold uppercase tracking-wider ${i === targetColumnIndex ? 'text-blue-400' : 'text-gray-400'}`}>
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, i) => (
-              <tr key={i} className="border-b border-gray-700/50 last:border-none">
-                {row.map((cell, j) => (
-                  <td key={j} className={`py-5 px-6 font-mono ${j === targetColumnIndex ? 'bg-blue-900/20 text-blue-300 font-bold' : ''}`}>
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
-};
-
-// --- Le Processus Rev'O Component ---
-const ProcessusRevo = () => {
-  const steps = [
-    {
-      icon: FaClipboardCheck,
-      title: "Diagnostic Data-Driven",
-      description: "Analyse de votre profil actuel pour identifier les gaps par rapport aux exigences du marché canadien."
-    },
-    {
-      icon: FaUserCog,
-      title: "Ingénierie de Profil",
-      description: "Alignement de votre CV et de votre personal branding sur les standards ATS et salariaux canadiens."
-    },
-    {
-      icon: FaRocket,
-      title: "Stratégie de Transition",
-      description: "Accès à notre réseau et aux stratégies de ciblage pour décrocher des opportunités à 130k$ et plus."
-    }
-  ];
-
-  return (
-    <section className="py-24 sm:py-32 px-4 bg-gray-900/50">
-      <AnimatedSection>
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16">
-            Le Processus Rev'O
-          </h2>
-          <div className="grid md:grid-cols-3 gap-10">
-            {steps.map((step, i) => (
-              <div key={i} className="text-center p-6 bg-gray-800/60 rounded-xl border border-gray-700/50 transition-all duration-300 hover:border-blue-500 hover:bg-gray-800">
-                <div className="flex justify-center mb-4">
-                  <step.icon className="text-5xl text-blue-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-gray-400">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
-    </section>
-  );
-};
-
-// --- New Strategic CTA Component ---
-const StrategicCTA = () => {
-  return (
-    <div className="mt-12 text-center">
-      <Link href="/diagnostic" legacyBehavior>
-        <a className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-base transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
-          Évaluer mon éligibilité au marché canadien (2 min)
-        </a>
-      </Link>
-    </div>
-  );
-};
+import { FaChartBar, FaExclamationTriangle, FaArrowRight } from 'react-icons/fa';
+import { AnimatedSection } from '../components/home/AnimatedSection';
+import { ComparisonTable } from '../components/home/ComparisonTable';
+import { ProcessusRevo } from '../components/home/ProcessusRevo';
+import { StrategicCTA } from '../components/home/StrategicCTA';
 
 const Home = () => {
   const tableHeaders = ["Niveau d'Expérience", "Afrique (Hubs Tech)", "Canada (Cible)"];
@@ -142,7 +20,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col justify-center items-center text-center px-4">
         <div className="max-w-4xl mx-auto">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -150,7 +28,7 @@ const Home = () => {
           >
             Ne laissez plus 80% de votre potentiel de revenu sur la table.
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -170,12 +48,13 @@ const Home = () => {
                 Disponibilité : 12 places ce mois
               </span>
               <div className="mt-6">
-                 <Link href="/diagnostic" legacyBehavior>
-                  <a className="inline-flex items-center justify-center bg-white hover:bg-gray-200 text-gray-900 font-bold py-4 px-8 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 animate-pulse">
+                 <Link
+                    href="/diagnostic"
+                    className="inline-flex items-center justify-center bg-white hover:bg-gray-200 text-gray-900 font-bold py-4 px-8 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 animate-pulse"
+                 >
                     LANCER MON ANALYSE DE RENDEMENT
                     <FaArrowRight className="ml-3" />
-                  </a>
-                </Link>
+                  </Link>
               </div>
             </div>
           </div>
