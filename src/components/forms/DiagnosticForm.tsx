@@ -2,7 +2,15 @@
 
 import { useState } from 'react';
 
-const InputField = ({ id, label, type = 'text', placeholder, required = true }) => (
+type InputFieldProps = {
+  id: string;
+  label: string;
+  type?: string;
+  placeholder: string;
+  required?: boolean;
+};
+
+const InputField = ({ id, label, type = 'text', placeholder, required = true }: InputFieldProps) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-gray-300 mb-2">
       {label} {required && <span className="text-red-500">*</span>}
@@ -18,7 +26,14 @@ const InputField = ({ id, label, type = 'text', placeholder, required = true }) 
   </div>
 );
 
-const TextareaField = ({ id, label, placeholder, required = true }) => (
+type TextareaFieldProps = {
+  id: string;
+  label: string;
+  placeholder: string;
+  required?: boolean;
+};
+
+const TextareaField = ({ id, label, placeholder, required = true }: TextareaFieldProps) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-gray-300 mb-2">
       {label} {required && <span className="text-red-500">*</span>}
