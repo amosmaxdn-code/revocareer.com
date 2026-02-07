@@ -8,8 +8,8 @@ export function Navbar() {
     <nav className="bg-background fixed top-0 left-0 right-0 z-50 shadow-sm">
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-dark-blue">
-            Rev'O <span className="text-primary">Carrière</span>
+          <Link href="/">
+            <img src="/images/LOGO%20rc.jpg" alt="Rev'O Carrière Logo" width={150} height={50} />
           </Link>
 
           <div className="hidden md:block">
