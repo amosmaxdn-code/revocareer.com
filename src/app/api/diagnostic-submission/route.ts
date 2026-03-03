@@ -24,10 +24,12 @@ export async function POST(request: Request) {
       },
     });
 
+    const recipient = process.env.RECIPIENT_EMAIL || 'application@revocareer.com';
+
     // Email content
     const mailOptions = {
       from: process.env.SMTP_USER, // Your sender email
-      to: 'application@revocareer.com', // Recipient email as requested
+      to: recipient, // Recipient email as requested
       subject: `Nouvelle Candidature Project Manager Canada Track de ${fullName}`,
       html: `
         <h1>Nouvelle Candidature</h1>
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Candidature envoyée avec succès!' }, { status: 200 });
 
   } catch (error) {
-    console.error('Erreur lors de l'envoi de la candidature:', error);
-    return NextResponse.json({ message: 'Erreur interne du serveur lors de l'envoi de la candidature.' }, { status: 500 });
+    console.error("Erreur lors de l'envoi de la candidature:", error);
+    return NextResponse.json({ message: "Erreur interne du serveur lors de l'envoi de la candidature." }, { status: 500 });
   }
 }

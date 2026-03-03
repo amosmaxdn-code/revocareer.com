@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
@@ -10,16 +11,40 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Tous les champs sont obligatoires.' }, { status: 400 });
     }
 
-    // Pour l'instant, on log les données dans la console pour vérification.
-    console.log('Données de diagnostic reçues:', body);
+    // Configure Nodemailer transporter (consistent with diagnostic-submission)
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
 
-    // Ici, vous pourriez enregistrer les données dans une base de données,
-    // envoyer un email, etc.
+    const recipient = process.env.RECIPIENT_EMAIL || 'application@revocareer.com';
 
-    return NextResponse.json({ message: 'Données reçues avec succès' }, { status: 200 });
+    // Email content
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: recipient,
+      subject: `Nouveau Diagnostic Reçu - ${email}`,
+      html: `
+        <h1>Nouveau Diagnostic de Compatibilité</h1>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Téléphone:</strong> ${phone}</p>
+        <p><strong>Années d'Expérience:</strong> ${experience}</p>
+        <p><strong>Certification actuelle:</strong> ${certificationStatus}</p>
+        <p><strong>Budget prévu:</strong> ${budget}</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    return NextResponse.json({ message: 'Données reçues et email envoyé avec succès' }, { status: 200 });
 
   } catch (error) {
-    console.error('Erreur API:', error);
+    console.error('Erreur API Diagnostic:', error);
     return NextResponse.json({ message: 'Erreur Interne du Serveur' }, { status: 500 });
   }
 }

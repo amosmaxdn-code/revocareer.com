@@ -1,28 +1,27 @@
 import { NextResponse } from 'next/server';
-import sgMail from '@sendgrid/mail';
-
-// Set the SendGrid API key from environment variables
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-} else {
-  console.warn('SENDGRID_API_KEY is not set. Email sending will be disabled.');
-}
+import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
-  if (!process.env.SENDGRID_API_KEY) {
-    return NextResponse.json({ error: 'Email service is not configured.' }, { status: 500 });
-  }
-
   try {
     const body = await request.json();
 
-    // Basic validation with new human-readable field names
+    // Basic validation with human-readable field names
     if (!body.fullName || !body.country || !body.age || !body.experience) {
       return NextResponse.json({ error: 'Missing required identity or experience fields' }, { status: 400 });
     }
     
-    // The email address where you want to receive the applications
-    const toEmail = "contact@revocareer.com"; 
+    // Configure Nodemailer transporter (consistent with diagnostic routes)
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const recipient = process.env.RECIPIENT_EMAIL || 'application@revocareer.com';
 
     const content = `
       <h1>Nouvelle candidature pour le programme "Project Manager Canada Track"</h1>
@@ -76,20 +75,19 @@ export async function POST(request: Request) {
       </ul>
     `;
 
-    const msg = {
-      to: toEmail,
-      from: 'application@revocareer.com', // This should be a verified sender in your SendGrid account
-      subject: `Nouvelle Candidature (Revocareer) - ${body.fullName}`,
-      text: content.replace(/<[^>]*>/g, ''), // Simple text version
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: recipient,
+      subject: `Candidature Revocareer - ${body.fullName}`,
       html: content,
     };
 
-    await sgMail.send(msg);
+    await transporter.sendMail(mailOptions);
 
     return NextResponse.json({ message: 'Application submitted successfully!' }, { status: 200 });
 
   } catch (error: any) {
-    console.error('Error submitting application:', error.response?.body || error.message);
+    console.error('Error submitting application:', error);
     return NextResponse.json({ error: 'An error occurred while submitting the application.' }, { status: 500 });
   }
 }
