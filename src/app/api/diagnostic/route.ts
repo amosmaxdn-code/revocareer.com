@@ -11,20 +11,28 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Tous les champs sont obligatoires.' }, { status: 400 });
     }
 
-    // Configure Nodemailer transporter with more robust settings
+    // Configuration SMTP forcée pour le port 465 (SSL)
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '465'),
-      secure: process.env.SMTP_SECURE !== 'false', // Default to true if not explicitly false for safety with 465
+      host: process.env.SMTP_HOST || 'mail82.lwspanel.com',
+      port: 465,
+      secure: true, // Doit être true pour le port 465
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
       tls: {
-        // Many LWS/cPanel servers have certificate chain issues; this helps compatibility
-        rejectUnauthorized: false
+        rejectUnauthorized: false // Indispensable pour certains serveurs LWS
       }
     });
+
+    // Vérification de la configuration sur le serveur (sans logger le mot de passe)
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('CRITICAL: SMTP_USER or SMTP_PASS is not defined in environment variables.');
+      return NextResponse.json({ 
+        message: 'Erreur de configuration serveur.', 
+        details: 'Les variables SMTP ne sont pas configurées sur Vercel.' 
+      }, { status: 500 });
+    }
 
     const recipient = process.env.RECIPIENT_EMAIL || 'application@revocareer.com';
 
