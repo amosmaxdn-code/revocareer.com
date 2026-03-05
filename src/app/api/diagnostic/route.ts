@@ -11,15 +11,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Tous les champs sont obligatoires.' }, { status: 400 });
     }
 
-    // Configure Nodemailer transporter (consistent with diagnostic-submission)
+    // Configure Nodemailer transporter with more robust settings
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true',
+      port: parseInt(process.env.SMTP_PORT || '465'),
+      secure: process.env.SMTP_SECURE !== 'false', // Default to true if not explicitly false for safety with 465
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      tls: {
+        // Many LWS/cPanel servers have certificate chain issues; this helps compatibility
+        rejectUnauthorized: false
+      }
     });
 
     const recipient = process.env.RECIPIENT_EMAIL || 'application@revocareer.com';
@@ -39,12 +43,20 @@ export async function POST(request: Request) {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (mailError: any) {
+      console.error('Mail Sending Error Details:', mailError);
+      return NextResponse.json({ 
+        message: 'Erreur lors de l\'envoi de l\'email.', 
+        details: mailError.message 
+      }, { status: 500 });
+    }
 
     return NextResponse.json({ message: 'Données reçues et email envoyé avec succès' }, { status: 200 });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur API Diagnostic:', error);
-    return NextResponse.json({ message: 'Erreur Interne du Serveur' }, { status: 500 });
+    return NextResponse.json({ message: 'Erreur Interne du Serveur', details: error.message }, { status: 500 });
   }
 }
