@@ -1,7 +1,6 @@
 "use client";
 
-import { FaCheckCircle, FaRocket, FaShieldAlt, FaGlobalAfrica } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { FaCheckCircle } from 'react-icons/fa';
 import { AnimatedSection } from './AnimatedSection';
 
 export const PricingSection = () => {
@@ -73,10 +72,9 @@ export const PricingSection = () => {
 
           <div className="grid lg:grid-cols-3 gap-8 items-stretch">
             {offers.map((offer, index) => (
-              <motion.div
+              <div
                 key={index}
-                whileHover={{ y: -10 }}
-                className={`relative flex flex-col p-8 rounded-3xl border ${
+                className={`relative flex flex-col p-8 rounded-3xl border transition-all duration-300 ${
                   offer.highlight 
                     ? 'bg-gradient-to-b from-blue-900/40 to-gray-900 border-blue-500 shadow-2xl shadow-blue-500/20 order-first lg:order-none scale-105 z-10' 
                     : 'bg-gray-800/40 border-gray-700 hover:border-gray-500'
@@ -122,7 +120,7 @@ export const PricingSection = () => {
                 }`}>
                   {offer.cta}
                 </button>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
