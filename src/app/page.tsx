@@ -6,6 +6,7 @@ import { FaChartBar, FaExclamationTriangle, FaArrowRight } from 'react-icons/fa'
 import { AnimatedSection } from '../components/home/AnimatedSection';
 import { ComparisonTable } from '../components/home/ComparisonTable';
 import { ProcessusRevo } from '../components/home/ProcessusRevo';
+import { PricingSection } from '../components/home/PricingSection';
 import { StrategicCTA } from '../components/home/StrategicCTA';
 
 const Home = () => {
@@ -79,6 +80,8 @@ const Home = () => {
       </section>
 
       <ProcessusRevo />
+
+      <PricingSection />
 
       {/* Cost of Inaction Section */}
       <section className="pb-24 sm:pb-32 px-4">
