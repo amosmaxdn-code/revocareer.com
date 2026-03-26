@@ -98,10 +98,15 @@ export const PricingSection = () => {
                     {offer.badge}
                   </span>
                   <h3 className="text-2xl font-bold text-white mt-4">{offer.title}</h3>
-                  <div className="mt-4 flex items-baseline">
+                  <div className="mt-4 flex items-baseline gap-2">
                     <span className="text-4xl font-extrabold text-white">{offer.price}</span>
+                    {offer.originalPrice && (
+                      <span className="text-lg text-gray-500 line-through decoration-red-500/50">{offer.originalPrice}</span>
+                    )}
                   </div>
-                  <p className="text-sm text-gray-400 mt-2">{offer.duration}</p>
+                  <p className={`text-sm mt-2 font-medium ${offer.duration.includes('/') ? 'text-orange-400' : 'text-gray-400'}`}>
+                    {offer.duration}
+                  </p>
                 </div>
 
                 <p className="text-gray-300 mb-8 text-sm leading-relaxed">
