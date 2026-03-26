@@ -8,25 +8,27 @@ export const PricingSection = () => {
   const offers = [
     {
       title: "Diagnostic & Optimisation Express",
-      badge: "Entrée",
+      badge: "Offre Flash -70%",
       price: "15 000 FCFA",
-      duration: "En 48h",
-      description: "Obtenez un profil clair et professionnel pour attirer des opportunités concrètes.",
+      originalPrice: "50 000 FCFA",
+      duration: "Places restantes : 7 / 20",
+      description: "Obtenez un profil de niveau international en 48h. Idéal pour débloquer vos premières opportunités.",
       features: [
         "Audit flash de votre profil",
         "Optimisation de la visibilité",
         "Correction des erreurs majeures",
         "Prêt en 48 heures"
       ],
-      cta: "Optimiser mon profil",
+      cta: "En profiter maintenant",
       href: "/offres/optimisation-express",
       highlight: false,
       color: "gray"
     },
     {
       title: "Canada Track (Premium)",
-      badge: "Élite",
+      badge: "Élite / Sélectif",
       price: "Sur Devis",
+      originalPrice: null,
       duration: "Accompagnement VIP",
       description: "Le programme complet pour les Project Managers visant l'expatriation ou le remote international.",
       features: [
@@ -43,9 +45,10 @@ export const PricingSection = () => {
     },
     {
       title: "Repositionnement Stratégique",
-      badge: "Transformation",
+      badge: "Lancement -70%",
       price: "75 000 FCFA",
-      duration: "Accélération",
+      originalPrice: "250 000 FCFA",
+      duration: "Places restantes : 4 / 20",
       description: "Une transformation réelle pour arrêter de candidater au hasard et viser le niveau supérieur.",
       features: [
         "Clarté totale sur votre direction",
@@ -54,7 +57,7 @@ export const PricingSection = () => {
         "Augmentation des opportunités",
         "Méthode d'évolution autonome"
       ],
-      cta: "Accélérer ma carrière",
+      cta: "Saisir l'opportunité",
       href: "/offres/repositionnement-strategique",
       highlight: false,
       color: "purple"
@@ -62,7 +65,7 @@ export const PricingSection = () => {
   ];
 
   return (
-    <section className="py-24 px-4 bg-gray-900">
+    <section className="py-24 px-4 bg-gray-900" id="pricing">
       <AnimatedSection>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -134,6 +137,12 @@ export const PricingSection = () => {
                 </Link>
               </div>
             ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <p className="text-sm text-gray-500 italic">
+              * Les tarifs promotionnels sont valables pendant 48h dans la limite des 20 places disponibles par mois.
+            </p>
           </div>
         </div>
       </AnimatedSection>
