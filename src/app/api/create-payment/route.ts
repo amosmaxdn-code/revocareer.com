@@ -41,12 +41,12 @@ export async function POST(request: Request) {
       throw new Error(data.message || JSON.stringify(data));
     }
 
-    // EXTRACTION CORRIGÉE (Basée sur votre retour : data["v1/transaction"])
+    // Extraction robuste de l'ID de transaction
     const transaction = data["v1/transaction"] || data.v1?.transaction || data.transaction || data;
     const transactionId = transaction?.id;
 
     if (!transactionId) {
-      throw new Error(`ID manquant. Structure : ${Object.keys(data).join(', ')}`);
+      throw new Error(`ID transaction introuvable. Clés: ${Object.keys(data).join(', ')}`);
     }
 
     // 2. Générer le jeton (token) pour le paiement
@@ -64,12 +64,17 @@ export async function POST(request: Request) {
       throw new Error(tokenData.message || 'Erreur génération lien paiement.');
     }
 
-    // Extraction du token (même logique de flexibilité pour le slash)
-    const tokenObj = tokenData["v1/token"] || tokenData.v1?.token || tokenData.token || tokenData;
-    const tokenUrl = tokenObj?.url;
+    // EXTRACTION ULTRA-ROBUSTE DE L'URL
+    // On cherche 'url' partout où il pourrait être
+    const tokenUrl = 
+      tokenData.url || 
+      tokenData["v1/token"]?.url || 
+      tokenData.v1?.token?.url || 
+      tokenData.token?.url ||
+      (typeof tokenData.token === 'string' ? null : tokenData.token?.url);
 
     if (!tokenUrl) {
-      throw new Error(`URL de paiement manquante. Structure : ${Object.keys(tokenData).join(', ')}`);
+      throw new Error(`URL de paiement introuvable. Réponse: ${JSON.stringify(tokenData).substring(0, 100)}`);
     }
 
     return NextResponse.json({ 
