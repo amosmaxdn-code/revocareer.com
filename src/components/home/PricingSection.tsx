@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { FaCheckCircle } from 'react-icons/fa';
 import { AnimatedSection } from './AnimatedSection';
 
@@ -18,6 +19,7 @@ export const PricingSection = () => {
         "Prêt en 48 heures"
       ],
       cta: "Optimiser mon profil",
+      href: "/diagnostic?plan=express",
       highlight: false,
       color: "gray"
     },
@@ -35,6 +37,7 @@ export const PricingSection = () => {
         "Garantie de Positionnement"
       ],
       cta: "Lancer mon Diagnostic",
+      href: "/apply?plan=premium",
       highlight: true,
       color: "blue"
     },
@@ -52,6 +55,7 @@ export const PricingSection = () => {
         "Méthode d'évolution autonome"
       ],
       cta: "Accélérer ma carrière",
+      href: "/diagnostic?plan=strategic",
       highlight: false,
       color: "purple"
     }
@@ -113,13 +117,16 @@ export const PricingSection = () => {
                   ))}
                 </ul>
 
-                <button className={`w-full py-4 rounded-xl font-bold transition-all duration-300 ${
-                  offer.highlight 
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30' 
-                    : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
-                }`}>
+                <Link 
+                  href={offer.href}
+                  className={`w-full py-4 rounded-xl font-bold text-center transition-all duration-300 ${
+                    offer.highlight 
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30' 
+                      : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+                  }`}
+                >
                   {offer.cta}
-                </button>
+                </Link>
               </div>
             ))}
           </div>
