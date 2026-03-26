@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         description: `Paiement Offre ${planName} - Revocareer`,
-        amount: Math.round(amount), // S'assurer que c'est un entier
+        amount: Math.round(amount),
         currency: { iso: 'XOF' },
         customer: {
           firstname: firstname || 'Client',
@@ -38,20 +38,18 @@ export async function POST(request: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('FedaPay API Error Response:', data);
-      throw new Error(data.message || 'Erreur lors de la création de la transaction.');
+      throw new Error(data.message || JSON.stringify(data));
     }
 
-    // RÉCUPÉRATION SÉCURISÉE DE L'ID DE TRANSACTION
-    // On cherche l'ID dans data.v1.transaction ou directement dans data.transaction
-    const transaction = data.v1?.transaction || data.transaction;
-    
-    if (!transaction || !transaction.id) {
-      console.error('Structure de réponse FedaPay inconnue:', data);
-      throw new Error('La réponse de FedaPay ne contient pas d\'identifiant de transaction.');
-    }
+    // Extraction de la transaction - FedaPay renvoie souvent { "v1": { "transaction": { ... } } }
+    // On essaie plusieurs chemins par sécurité
+    const transaction = data.v1?.transaction || data.transaction || data;
+    const transactionId = transaction?.id;
 
-    const transactionId = transaction.id;
+    if (!transactionId) {
+      // DEBUG: Si on ne trouve pas l'ID, on renvoie la structure reçue pour comprendre
+      throw new Error(`Structure reçue de FedaPay : ${JSON.stringify(data).substring(0, 100)}...`);
+    }
 
     // 2. Générer le jeton (token) pour le paiement
     const tokenResponse = await fetch(`${BASE_URL}/transactions/${transactionId}/token`, {
@@ -65,14 +63,13 @@ export async function POST(request: Request) {
     const tokenData = await tokenResponse.json();
 
     if (!tokenResponse.ok) {
-      throw new Error(tokenData.message || 'Erreur lors de la génération du lien de paiement.');
+      throw new Error(tokenData.message || 'Erreur génération lien paiement.');
     }
 
-    // Récupération sécurisée de l'URL du token
-    const tokenUrl = tokenData.v1?.token?.url || tokenData.token?.url;
+    const tokenUrl = tokenData.v1?.token?.url || tokenData.token?.url || tokenData.url;
 
     if (!tokenUrl) {
-      throw new Error('URL de paiement non trouvée dans la réponse de FedaPay.');
+      throw new Error(`Lien de paiement manquant dans la réponse token : ${JSON.stringify(tokenData).substring(0, 50)}`);
     }
 
     return NextResponse.json({ 
@@ -81,7 +78,7 @@ export async function POST(request: Request) {
     });
 
   } catch (error: any) {
-    console.error('Detailed FedaPay Error:', error);
+    console.error('FedaPay Error Detail:', error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
