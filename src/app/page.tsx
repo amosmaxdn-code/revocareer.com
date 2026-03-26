@@ -54,9 +54,9 @@ const Home = () => {
               <div className="mt-8">
                  <Link
                     href="/diagnostic"
-                    className="group inline-flex items-center justify-center bg-white hover:bg-blue-50 text-gray-900 font-bold py-4 px-8 rounded-xl text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
+                    className="group inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl text-base md:text-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
                  >
-                    LANCER MON ANALYSE DE RENDEMENT
+                    DÉCOUVRIR NOS OFFRES (MAJ)
                     <FaArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" />
                   </Link>
               </div>
