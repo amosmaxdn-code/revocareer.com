@@ -4,20 +4,23 @@ export async function POST(request: Request) {
   try {
     const { amount, email, firstname, lastname, planName } = await request.json();
 
-    // On récupère et on nettoie la clé (suppression des espaces éventuels)
     const FEDAPAY_SECRET_KEY = process.env.FEDAPAY_SECRET_KEY?.trim();
     
-    const FEDAPAY_API_URL = process.env.NODE_ENV === 'production' 
-      ? 'https://api.fedapay.com/v1/transactions' 
-      : 'https://sandbox-api.fedapay.com/v1/transactions';
-
     if (!FEDAPAY_SECRET_KEY) {
       return NextResponse.json({ message: 'Clé FedaPay non configurée sur Vercel.' }, { status: 500 });
     }
 
-    // Format correct pour FedaPay : Basic Auth avec "api" comme utilisateur
-    // Authorization: Basic base64(api:sk_live_...)
-    const authHeader = `Basic ${Buffer.from(`api:${FEDAPAY_SECRET_KEY}`).toString('base64')}`;
+    // DÉTECTION AUTOMATIQUE DU MODE (Live ou Sandbox)
+    // Si la clé commence par sk_live, on utilise l'API de production
+    const isLive = FEDAPAY_SECRET_KEY.startsWith('sk_live');
+    const FEDAPAY_API_URL = isLive 
+      ? 'https://api.fedapay.com/v1/transactions' 
+      : 'https://sandbox-api.fedapay.com/v1/transactions';
+
+    console.log(`Mode de paiement : ${isLive ? 'LIVE' : 'SANDBOX'}`);
+
+    // Tentative avec Bearer Token (plus simple et standard)
+    const authHeader = `Bearer ${FEDAPAY_SECRET_KEY}`;
 
     // 1. Créer la transaction
     const response = await fetch(FEDAPAY_API_URL, {
@@ -31,8 +34,8 @@ export async function POST(request: Request) {
         amount: amount,
         currency: { iso: 'XOF' },
         customer: {
-          firstname: firstname,
-          lastname: lastname,
+          firstname: firstname || 'Client',
+          lastname: lastname || 'Revocareer',
           email: email,
         },
         callback_url: `${process.env.NEXT_PUBLIC_URL || 'https://revocareer.com'}/confirmation`,
@@ -42,9 +45,8 @@ export async function POST(request: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      // Si FedaPay renvoie une erreur, on la capture précisément
-      const errorMsg = data.message || (data.errors ? JSON.stringify(data.errors) : 'Erreur API FedaPay');
-      throw new Error(errorMsg);
+      console.error('Erreur FedaPay:', data);
+      throw new Error(data.message || 'Erreur d\'authentification ou de paramétrage FedaPay.');
     }
 
     const transactionId = data.v1.transaction.id;
@@ -71,10 +73,6 @@ export async function POST(request: Request) {
 
   } catch (error: any) {
     console.error('FedaPay Final Error:', error);
-    // On renvoie un message clair pour l'interface
-    let userMessage = error.message;
-    if (userMessage.includes('Invalid API key')) userMessage = "La clé API FedaPay est invalide. Vérifiez vos réglages Vercel.";
-    
-    return NextResponse.json({ message: userMessage }, { status: 500 });
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
