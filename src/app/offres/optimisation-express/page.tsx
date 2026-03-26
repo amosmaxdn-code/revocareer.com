@@ -124,6 +124,12 @@ export default function OptimisationExpressPage() {
                 {status === 'redirecting' ? 'Redirection...' : 'Payer et Commencer'}
                 <FaArrowRight className="ml-3" />
               </button>
+
+              {status.startsWith('error') && (
+                <p className="mt-4 text-center text-red-600 text-sm font-bold bg-red-100 p-3 rounded-lg border border-red-200">
+                  ⚠️ {status.substring(7)}
+                </p>
+              )}
             </form>
             
             <p className="text-center text-xs text-gray-500 mt-6">
