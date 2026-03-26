@@ -19,7 +19,7 @@ export const PricingSection = () => {
         "Prêt en 48 heures"
       ],
       cta: "Optimiser mon profil",
-      href: "/diagnostic?plan=express",
+      href: "/offres/optimisation-express",
       highlight: false,
       color: "gray"
     },
@@ -37,7 +37,7 @@ export const PricingSection = () => {
         "Garantie de Positionnement"
       ],
       cta: "Lancer mon Diagnostic",
-      href: "/apply?plan=premium",
+      href: "/apply",
       highlight: true,
       color: "blue"
     },
@@ -55,7 +55,7 @@ export const PricingSection = () => {
         "Méthode d'évolution autonome"
       ],
       cta: "Accélérer ma carrière",
-      href: "/diagnostic?plan=strategic",
+      href: "/offres/repositionnement-strategique",
       highlight: false,
       color: "purple"
     }
