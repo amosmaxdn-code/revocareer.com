@@ -41,14 +41,12 @@ export async function POST(request: Request) {
       throw new Error(data.message || JSON.stringify(data));
     }
 
-    // Extraction de la transaction - FedaPay renvoie souvent { "v1": { "transaction": { ... } } }
-    // On essaie plusieurs chemins par sécurité
-    const transaction = data.v1?.transaction || data.transaction || data;
+    // EXTRACTION CORRIGÉE (Basée sur votre retour : data["v1/transaction"])
+    const transaction = data["v1/transaction"] || data.v1?.transaction || data.transaction || data;
     const transactionId = transaction?.id;
 
     if (!transactionId) {
-      // DEBUG: Si on ne trouve pas l'ID, on renvoie la structure reçue pour comprendre
-      throw new Error(`Structure reçue de FedaPay : ${JSON.stringify(data).substring(0, 100)}...`);
+      throw new Error(`ID manquant. Structure : ${Object.keys(data).join(', ')}`);
     }
 
     // 2. Générer le jeton (token) pour le paiement
@@ -66,10 +64,12 @@ export async function POST(request: Request) {
       throw new Error(tokenData.message || 'Erreur génération lien paiement.');
     }
 
-    const tokenUrl = tokenData.v1?.token?.url || tokenData.token?.url || tokenData.url;
+    // Extraction du token (même logique de flexibilité pour le slash)
+    const tokenObj = tokenData["v1/token"] || tokenData.v1?.token || tokenData.token || tokenData;
+    const tokenUrl = tokenObj?.url;
 
     if (!tokenUrl) {
-      throw new Error(`Lien de paiement manquant dans la réponse token : ${JSON.stringify(tokenData).substring(0, 50)}`);
+      throw new Error(`URL de paiement manquante. Structure : ${Object.keys(tokenData).join(', ')}`);
     }
 
     return NextResponse.json({ 
